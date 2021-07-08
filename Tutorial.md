@@ -5,7 +5,7 @@
 * Install the package following the [instructions.](https://github.com/tingyucha/Airborne-Radar-Navigation-Correction/blob/main/README.md) 
 * Install soloii
 
-### 2. Select a flight leg
+### 2. Select a flight leg and set up the directories
 
 Select a ~10-minute period during your flight where the aircraft is flying in a straight line and at a constant altitude. Ideally, this 10-minute period is 
 
