@@ -2,14 +2,17 @@
 
 ### 1. Install the navigation correction packpage 
 
-Install the package following the [instructions](https://github.com/tingyucha/Airborne-Radar-Navigation-Correction/blob/main/README.md) 
-
+* Install the package following the [instructions.](https://github.com/tingyucha/Airborne-Radar-Navigation-Correction/blob/main/README.md) 
+* Install soloii
 
 ### 2. Select a flight leg
 
 Select a ~10-minute period during your flight where the aircraft is flying in a straight line and at a constant altitude. Ideally, this 10-minute period is 
+
 (1) in clear weather, where the ground shows up clearly in the reflectivity field and is not masked by other echoes; and 
+
 (2) over land, where we know that the ground isn’t moving. But, some light rain and/or while the aircraft is over the ocean is still acceptable. 
+
 In hurricane reconnaissance flights, outbound or inbound legs are typically good. You will need to know the exact number of sweep files in that 10-minute period.
 
 Below is an example of applying the navigation correction on a NOAA43 flight into Hurricane Ophelia (2005) on September 11, 2005.
@@ -19,7 +22,7 @@ Below is an example of applying the navigation correction on a NOAA43 flight int
 
 File is in green color, folder/directory is in blue color, and executable is in red color.
 
-Following the commands below to convert the ar2v to sweep files, and put the fore and aft files into a separate folder
+Following the commands below to convert the ar2v to sweep files.
 * Convert the levelII data to sweep files
 
 ```terminal
@@ -34,13 +37,13 @@ In this example, radar reflectivity is DZ, spectrum width is SPEC_WDT, and Doppl
 
 ![image](https://user-images.githubusercontent.com/25255478/124950634-d59d1d00-dfcf-11eb-8d77-2cf908c0265c.png)
 
-* Copying these fields to a new field with their common names in soloii:
+* Copying these fields to a new field with their common names in soloii. Depending on how your data was unpacked, you may not need to do this step. 
 
 ```terminal
 copy VE to VEL; copy DZ to DBZ; copy SPEC_WDT to WIDTH; copy WIDTH to SW
 ```
 
-* Depending on how your data was unpacked, you may not need to do this step. ***However, you would need to create a field called NCP and assign a value of 1 to it.***
+* Create a field called NCP and assign a value of 1 to it.
 
 ```terminal
 copy DBZ to NCP; assign-value 1 to NCP
@@ -102,7 +105,7 @@ Go back to the main directory:
 cd /navcorr
 ```
 
-Move the folder containing the cfradial files in the /navcorr directory (or anywhere but the cfradial folder). In this example, I moved it into the /navcorr directory. Now, move the generated text files into the cfradial folder:
+Move the folder containing the cfradial files in the **/navcorr** directory (or anywhere but the cfradial folder). In this example, I moved it into the /navcorr directory. Now, move the generated text files into the cfradial folder:
 
 ```terminal
 mv 20050911/*.txt cfradial
@@ -144,7 +147,7 @@ It should say “Finished!” in the terminal. After this, whatever you do on so
 
 Now go to the other directory and repeat the same thing. Since I was in the fore directory last, we’ll go into the aft directory.
 
-Again, when exporting cfac files, make sure you have the correct file designation. Since I’m working on the aft files, the file name should be TA43P3
+Again, when exporting cfac files, make sure you have the correct file designation. Since I’m working on the aft files, the file name should be **TA43P3**
 
 ![image](https://user-images.githubusercontent.com/25255478/124953751-a5a34900-dfd2-11eb-9467-6392901c2c82.png)
 
@@ -172,6 +175,11 @@ Repeat the whole process from converting the sweep files into cfradial.
 cd /navcorr/swp
 RadxConvert -f swp* -outdir ../cfradial
 ```
+If the navigation correction is not retained in the converted cfradial files, you may want to try the command below to keep the existing navigation correction:
+
+```terminal
+•	RadxConvert -apply_georefs -primary_axis y_prime -radar_num 2 -f ./swp*
+```
 
 Once you’ve run the navigation correction again, you should see the correction values decrease relative to the first navigation correction that you did.
 
@@ -181,18 +189,3 @@ Once you’ve run the navigation correction again, you should see the correction
 You typically want to run the navigation correction to the point where the correction values are close to zero. What you do beyond this point is to add the correction values in the second round of navigation correction to the correction values in the first round of navigation correction, export the “new” cfac file to solo and repeat the commands in solo. Then run the navigation correction again and you would see that the correction values will approach zero more than in the second round of navigation correction. The cfac files that you exported that resulted in correction factors closest to zero (before you stop) is the one you want to apply to the rest of the sweeps.
 
 
-
-* !Move the fore sweeps to the fore folder, and aft sweeps to the aft folder
-
-```terminal
-mv *.-20* aft/
-```
-
-```terminal
-mv *.20* fore/
-```
-
-
-
-
-### 3. 
